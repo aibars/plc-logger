@@ -1,82 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Globalization;
 
-namespace PLCLogger
+namespace PLCLogger.Messages
 {
-    /// <summary>
-    /// Representa una línea de mensaje de un log de mensajes
-    /// </summary>
-    public class LogLine
-    {
-        public DateTime time;
-        public string message;
-        public string parent;
-
-        public LogLine( string _message, string _parent=null )
-        {
-            time = DateTime.Now;
-            message = _message;
-            parent = _parent;
-        }
-
-        public override string ToString()
-        {
-            CultureInfo esAR = new CultureInfo("es-AR");
-            string linea = null;
-
-            linea = time.ToString(esAR) + ":";
-            linea += "\t[" + parent + "]\t" + message;
-
-            return linea;
-        }
-    }
-
-    /// <summary>
-    /// Almacena un log de mensajes incluyendo el tiempo de ocurrencia del evento
-    /// </summary>
-    public class Log
-    {
-        public List<LogLine> Logs;
-        public string parent;
-
-        public Log( string _parent = null )
-        {
-            Logs = new List<LogLine>();
-            parent = _parent;
-        }
-
-        public void Add(string message)
-        {
-            Logs.Add(new LogLine(message, parent));
-        }
-
-        /// <summary>
-        /// Agrega un Log de mensajes completo
-        /// </summary>
-        /// <param name="_Log">Log de mensajes a agregar</param>
-        /// <param name="clear">Indica si borra los mensajes del Log de origen</param>
-        public void Add(Log _Log, bool move=true)
-        {
-            Logs.AddRange(_Log.Logs);
-            if (move) _Log.Clear();
-        }
-
-        public void Add(LogLine _LogLine)
-        {
-            Logs.Add(_LogLine);
-        }
-
-        public void Clear()
-        {
-            Logs.Clear();
-        }
-    }
-
     public class LogFile
     {
         string _NombreArchivo;
+
         public Log MessageLog;
 
         string NombreArchivo
@@ -151,8 +81,7 @@ namespace PLCLogger
                     retVal = false;
                 }
 
-                if (fs != null)
-                    fs.Close();
+                if (fs != null) fs.Close();
             }
 
             return retVal;

@@ -202,7 +202,7 @@ namespace PLCLogger
             {
                 cfg = new Configuration();
                 cfg.Configure();
-                Assembly assembly = typeof(Variable).Assembly;
+                var assembly = typeof(Variable).Assembly;
                 cfg.AddAssembly(assembly);
                 sessionFactory = cfg.BuildSessionFactory();
                 //Crea las tablas con las columnas definidos en los *.hbm.xml. Si existen las deja como estaban.

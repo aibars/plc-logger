@@ -25,11 +25,12 @@ namespace PLCLogger
             InitializeComponent();
             try
             {
+                LogFile = new LogFile();
                 MessageLog = new Log("FPrincipal");
                 plc = new PLC_Interface();
                 config = new Config();
                 DB = new Database();
-                LogFile = new LogFile();
+                
             }
             catch (Exception e)
             {

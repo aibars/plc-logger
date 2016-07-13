@@ -115,7 +115,6 @@
     <Compile Include="FSplash.designer.cs">
       <DependentUpon>FSplash.cs</DependentUpon>
     </Compile>
-    <Compile Include="LogFile.cs" />
     <Compile Include="PLC.cs" />
     <Compile Include="PLC_Interface.cs" />
     <Compile Include="Program.cs" />
@@ -173,6 +172,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PLCLogger.Messages\PLCLogger.Messages.csproj">
+      <Project>{0fe95aa9-9e26-4fe9-8e76-6d81ae66e013}</Project>
+      <Name>PLCLogger.Messages</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
