@@ -58,8 +58,8 @@ namespace PLCLogger
                         var var_a_escribir = (List<Variable>)query.List<Variable>();
                         foreach (var v in var_a_escribir)
                         {
-                            v.address = Config.convertAdrress(v.direccion, 2);
-                            if (v.type == "bit") v.subaddress = Config.convertAdrress(v.direccion, 3);
+                            v.Address = Config.convertAdrress(v.Direccion, 2);
+                            if (v.Type == "bit") v.Subaddress = Config.convertAdrress(v.Direccion, 3);
                             plc.Variables_Escritura.Add(v);
 
                         }
@@ -70,11 +70,11 @@ namespace PLCLogger
 
                         foreach (Variable v in var_no_escritas)
                         {
-                            hql = "update Variable set valor_escritura=:valor, instante_escritura=:inst, escribir=:escribir where name=:name ";
+                            hql = "update Variable set ValorEscritura=:Valor, instante_escritura=:inst, escribir=:escribir where Name=:Name ";
                             query = session.CreateQuery(hql);
                             query.SetParameter("valor", null);
                             query.SetParameter("escribir", false);
-                            query.SetParameter("name", v.name);
+                            query.SetParameter("name", v.Name);
                             query.SetParameter("inst", null);
                             query.ExecuteUpdate();
                         }
@@ -120,8 +120,8 @@ namespace PLCLogger
                     for (int i = 0; i < plc.Variables.Count; i++)
                     {
 
-                        plc.Variables[i].fecha = DateTime.Now;
-                        var variableDB = variables_db.Find(var => var.name == plc.Variables[i].name);
+                        plc.Variables[i].Fecha = DateTime.Now;
+                        var variableDB = variables_db.Find(var => var.Name == plc.Variables[i].Name);
 
                         // si no está cargada, la crea
                         if (variableDB == null)
@@ -135,26 +135,26 @@ namespace PLCLogger
 
                             //  session.Update(plc.Variables[i]);
 
-                            string hql = "update Variable set address=:dir,type=:type,valor=:valor, fecha=:fecha where name=:name ";
-                            IQuery query = session.CreateQuery(hql);
-                            query.SetParameter("valor", plc.Variables[i].valor);
-                            query.SetParameter("dir", plc.Variables[i].address);
-                            query.SetParameter("type", plc.Variables[i].type);
-                            query.SetParameter("name", plc.Variables[i].name);
-                            query.SetParameter("fecha", plc.Variables[i].fecha);
+                            string hql = "update Variable set address=:dir,type=:type,valor=:valor, Fecha=:Fecha where name=:name ";
+                            var query = session.CreateQuery(hql);
+                            query.SetParameter("valor", plc.Variables[i].Valor);
+                            query.SetParameter("dir", plc.Variables[i].Address);
+                            query.SetParameter("type", plc.Variables[i].Type);
+                            query.SetParameter("Name", plc.Variables[i].Name);
+                            query.SetParameter("fecha", plc.Variables[i].Fecha);
 
                             query.ExecuteUpdate();
 
 
-                            //actualiza variables_log en caso de un cambio en el valor
+                            //actualiza variables_log en caso de un cambio en el Valor
 
-                            if (plc.Variables[i].valor != variableDB.valor)
+                            if (plc.Variables[i].Valor != variableDB.Valor)
                             {
                                 var vl = new VariableLog
                                 {
-                                    fecha = DateTime.Now,
-                                    valor = plc.Variables[i].valor,
-                                    name = plc.Variables[i].name
+                                    Fecha = DateTime.Now,
+                                    Valor = plc.Variables[i].Valor,
+                                    Name = plc.Variables[i].Name
                                 };
                                 session.Save(vl);
                             }

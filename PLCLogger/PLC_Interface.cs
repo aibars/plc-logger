@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Diagnostics;
 
 namespace PLCLogger
 {
@@ -38,7 +37,7 @@ namespace PLCLogger
             {
                 case "MODBUS/TCP":
                    
-                    bool retval = ReadHoldingRegisterEx(Variables[0].address, Variables[Variables.Count-1].address, MemoriaPLC, Variables[0].address);
+                    bool retval = ReadHoldingRegisterEx(Variables[0].Address, Variables[Variables.Count-1].Address, MemoriaPLC, Variables[0].Address);
                    
                    
                     if (!retval) return (false);
@@ -49,32 +48,32 @@ namespace PLCLogger
                             {
                                 if (intervalo.variables.Count == 1)
                                 {
-                                    if (intervalo.variables[0].cant_elem == 1)
+                                    if (intervalo.variables[0].CantElem == 1)
                                     {
                                         //leer una variable de un elemento
-                                        ushort address = (ushort)intervalo.variables[0].address;
-                                        MemoriaPLC[intervalo.variables[0].address] = mm.ReadHoldingRegisters(1, address, 1).First();
+                                        ushort Address = (ushort)intervalo.variables[0].Address;
+                                        MemoriaPLC[intervalo.variables[0].Address] = mm.ReadHoldingRegisters(1, Address, 1).First();
                                     }
                                     else
                                     {
-                                        //leer la cant_elem de una variable
-                                        for (int i = intervalo.variables[0].address; i < intervalo.variables[0].address+intervalo.variables[0].cant_elem; i++)
+                                        //leer la CantElem de una variable
+                                        for (int i = intervalo.variables[0].Address; i < intervalo.variables[0].Address+intervalo.variables[0].CantElem; i++)
                                             MemoriaPLC[i] = mm.ReadHoldingRegisters(1, (ushort)i, 1).First();
                                     }
                                 }
                                 else
                                 {
-                                    if (intervalo.variables[intervalo.variables.Count - 1].cant_elem == 1)
+                                    if (intervalo.variables[intervalo.variables.Count - 1].CantElem == 1)
                                     {
                                         //leer desde el comienzo del intervalo hasta la posición final
-                                        for (int i = intervalo.variables[0].address, j = 0; i < intervalo.variables.Count + intervalo.variables[0].address; i++, j++)
-                                            MemoriaPLC[i] = mm.ReadHoldingRegisters(1, (ushort)i, (ushort)intervalo.variables[j].cant_elem).First();
+                                        for (int i = intervalo.variables[0].Address, j = 0; i < intervalo.variables.Count + intervalo.variables[0].Address; i++, j++)
+                                            MemoriaPLC[i] = mm.ReadHoldingRegisters(1, (ushort)i, (ushort)intervalo.variables[j].CantElem).First();
                                     }
                                     else
                                     {
-                                        //leer desde el comienzo del intervalo hasta la posición final más cant_elem de la última variable; 
+                                        //leer desde el comienzo del intervalo hasta la posición final más CantElem de la última variable; 
                                         int max = intervalo.variables.Count;
-                                        for (int i = intervalo.variables[0].address; i < intervalo.variables[0].address + max + intervalo.variables[max].cant_elem; i++)
+                                        for (int i = intervalo.variables[0].Address; i < intervalo.variables[0].Address + max + intervalo.variables[max].CantElem; i++)
                                             MemoriaPLC[i] = mm.ReadHoldingRegisters(1, (ushort)i, 1).First();
                                     }
                                 }
@@ -86,43 +85,43 @@ namespace PLCLogger
             foreach (Variable var in Variables)
                {
                    
-                   switch (var.type)
+                   switch (var.Type)
                    {
                        case "bool":
-                               var.valor = GetBit(var.address, var.lh, MemoriaPLC).ToString();
+                               var.Valor= GetBit(var.Address, var.Lh, MemoriaPLC).ToString();
                                break;
                        case "int":
-                               var.valor = GetInt(var.address, MemoriaPLC).ToString();
+                               var.Valor = GetInt(var.Address, MemoriaPLC).ToString();
                                break;
                        case "byte": 
-                               var.valor = GetByte(var.address, var.lh, MemoriaPLC).ToString();
+                               var.Valor = GetByte(var.Address, var.Lh, MemoriaPLC).ToString();
                                break;
                        case "dint":
-                               var.valor = GetDInt(var.address, MemoriaPLC).ToString();
+                               var.Valor = GetDInt(var.Address, MemoriaPLC).ToString();
                                break;
                        case "uint":
-                               var.valor = MemoriaPLC[var.address].ToString();
+                               var.Valor = MemoriaPLC[var.Address].ToString();
                                break;
                        case "udint":
-                               var.valor = GetUDInt(var.address, MemoriaPLC).ToString();
+                               var.Valor = GetUDInt(var.Address, MemoriaPLC).ToString();
                                break;
                        case "real":
-                               var.valor = GetFloat(var.address, MemoriaPLC).ToString();
+                               var.Valor = GetFloat(var.Address, MemoriaPLC).ToString();
                                break;
                        case "string":
-                               var.valor = GetString(var.address, 50, MemoriaPLC);
+                               var.Valor = GetString(var.Address, 50, MemoriaPLC);
                                break;
                        case "date":
-                               var.valor = GetDate(var.address, MemoriaPLC);
+                               var.Valor = GetDate(var.Address, MemoriaPLC);
                                break;
                        case "time":
-                               var.valor = GetTime(var.address, MemoriaPLC);
+                               var.Valor = GetTime(var.Address, MemoriaPLC);
                                break;
                        case "timeofday":
-                               var.valor = GetTimeOfDay(var.address, MemoriaPLC);
+                               var.Valor = GetTimeOfDay(var.Address, MemoriaPLC);
                                break;
                        case "bit": 
-                               var.valor = GetBit(var.address, var.subaddress, MemoriaPLC).ToString();
+                               var.Valor = GetBit(var.Address, var.Subaddress, MemoriaPLC).ToString();
                                break;
                    }
                    WordsRead++;
@@ -132,90 +131,90 @@ namespace PLCLogger
         }
         public bool Sync_WriteMemory(Variable var)
         {
-            switch (var.type)
+            switch (var.Type)
                         {
                             case "bool":
                                 {
-                                    SetBit(var.address, true, MemoriaPLC_Escritura, var.valor_escritura);
-                                    var.cant_elem = 1;
+                                    SetBit(var.Address, true, MemoriaPLC_Escritura, var.ValorEscritura);
+                                    var.CantElem = 1;
                                     break;
                                 }
                            case "int":
                                     {
-                                        SetInt(var.address, MemoriaPLC_Escritura, var.valor_escritura);
-                                        var.cant_elem = 1;
+                                        SetInt(var.Address, MemoriaPLC_Escritura, var.ValorEscritura);
+                                        var.CantElem = 1;
                                         break;
                                     }
                             case "byte":
                                     {
-                                        SetByte(var.address, MemoriaPLC_Escritura, var.valor_escritura);
-                                        var.cant_elem = 1;
+                                        SetByte(var.Address, MemoriaPLC_Escritura, var.ValorEscritura);
+                                        var.CantElem = 1;
                                         break;
                                     }
                             case "dint":
                                     {
-                                        SetDInt(var.address, MemoriaPLC_Escritura, var.valor_escritura);
-                                        var.cant_elem = 2;
+                                        SetDInt(var.Address, MemoriaPLC_Escritura, var.ValorEscritura);
+                                        var.CantElem = 2;
                                         break;
                                     }
                             case "uint":
                                     {
-                                        SetUInt(var.address, MemoriaPLC_Escritura, var.valor_escritura);
-                                        var.cant_elem = 1;
+                                        SetUInt(var.Address, MemoriaPLC_Escritura, var.ValorEscritura);
+                                        var.CantElem = 1;
                                         break;
                                     }
                             case "udint":
                                     {
-                                        SetUDInt(var.address, MemoriaPLC_Escritura, var.valor_escritura);
-                                        var.cant_elem = 2;
+                                        SetUDInt(var.Address, MemoriaPLC_Escritura, var.ValorEscritura);
+                                        var.CantElem = 2;
                                         break;
                                     }
                             case "real":
                                     {
-                                        SetFloat(var.address, MemoriaPLC_Escritura, var.valor_escritura);
-                                        var.cant_elem = 2;
+                                        SetFloat(var.Address, MemoriaPLC_Escritura, var.ValorEscritura);
+                                        var.CantElem = 2;
                                         break;
                                     }
                             case "string": 
                                     {
-                                        SetString(var.address, MemoriaPLC_Escritura, var.valor_escritura);
-                                        var.cant_elem = 16;
+                                        SetString(var.Address, MemoriaPLC_Escritura, var.ValorEscritura);
+                                        var.CantElem = 16;
                                         break;
                                     }
                             case "date":
                                     {
-                                        SetDate(var.address, MemoriaPLC_Escritura, var.valor_escritura);
-                                        var.cant_elem = 2;
+                                        SetDate(var.Address, MemoriaPLC_Escritura, var.ValorEscritura);
+                                        var.CantElem = 2;
                                         break;
                                     }
                             case "time":
                                     {
-                                        SetTime(var.address, MemoriaPLC_Escritura, var.valor_escritura);
-                                        var.cant_elem = 2;
+                                        SetTime(var.Address, MemoriaPLC_Escritura, var.ValorEscritura);
+                                        var.CantElem = 2;
                                         break;
                                     }
                             case "timeofday":
                                     {
-                                        SetTimeOfDay(var.address, MemoriaPLC_Escritura, var.valor_escritura);
-                                        var.cant_elem = 2;
+                                        SetTimeOfDay(var.Address, MemoriaPLC_Escritura, var.ValorEscritura);
+                                        var.CantElem = 2;
                                         break;
                                     }
                             case "bit":
                                     {
-                                        SetBit(var.address, var.subaddress, MemoriaPLC_Escritura, MemoriaPLC[var.address], var.valor_escritura);
-                                        var.cant_elem = 1;
+                                        SetBit(var.Address, var.Subaddress, MemoriaPLC_Escritura, MemoriaPLC[var.Address], var.ValorEscritura);
+                                        var.CantElem = 1;
                                         break;
                                     }
                         }
                         
               switch (Protocol)       
               {
-                  case "MODBBUS/TCP": if (!WriteHoldingRegisterEx(var.address, var.cant_elem, MemoriaPLC_Escritura, var.address)) return (false); 
+                  case "MODBBUS/TCP": if (!WriteHoldingRegisterEx(var.Address, var.CantElem, MemoriaPLC_Escritura, var.Address)) return (false); 
                                         return true;
                   case "MODBUS/RTU":
-                                        for (int i = 0; i < var.cant_elem; i++)
+                                        for (int i = 0; i < var.CantElem; i++)
                                         {
-                                            mm.WriteSingleRegister(UnitID, (ushort)(var.address+i), (ushort)MemoriaPLC_Escritura[var.address+i]); 
+                                            mm.WriteSingleRegister(UnitID, (ushort)(var.Address+i), (ushort)MemoriaPLC_Escritura[var.Address+i]); 
                                         }
                                         return true;
                   default: return false;
@@ -230,7 +229,7 @@ namespace PLCLogger
             Variable aux = new Variable();
             for (int i = 0; i < Variables.Count; i++)
                for (int j =0; j < Variables.Count-1; j++)
-                   if (Variables[j].address > Variables[j+1].address)
+                   if (Variables[j].Address > Variables[j+1].Address)
                    {
                        aux = Variables[j+1];
                        Variables[j+1] = Variables[j];
@@ -238,15 +237,15 @@ namespace PLCLogger
                    }
             
             var g = new Intervalo();
-            List<Intervalo> grupos = new List<Intervalo>();
-            int id = 0;
+            var grupos = new List<Intervalo>();
+            var id = 0;
             g.i = id;
             g.variables = new List<Variable> {Variables[0]};
             grupos.Add(g);
 
             for (int i = 0; i < Variables.Count-1; i++)
             {
-                if ((Variables[i + 1].address - Variables[i].address) == 1)
+                if ((Variables[i + 1].Address - Variables[i].Address) == 1)
                     grupos[id].variables.Add(Variables[i + 1]);
                 
                 else

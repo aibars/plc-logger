@@ -184,13 +184,13 @@ namespace PLCLogger
         {
             foreach (Variable v in variables)
             {
-                Match match = Regex.Match(v.direccion, @"%M([FWD])?(\d+)\.?(\d+)?", RegexOptions.IgnoreCase);
+                Match match = Regex.Match(v.Direccion, @"%M([FWD])?(\d+)\.?(\d+)?", RegexOptions.IgnoreCase);
                 if (match.Success)
                 {
-                    v.address = Convert.ToUInt16(match.Groups[2].Value);
-                    if (v.type.Equals("bit"))
+                    v.Address = Convert.ToUInt16(match.Groups[2].Value);
+                    if (v.Type.Equals("bit"))
                     {
-                        v.subaddress = Convert.ToUInt16(match.Groups[3].Value);
+                        v.Subaddress = Convert.ToUInt16(match.Groups[3].Value);
                     }
                 }
                 else { MessageLog.Add("Posición de memoria no válida"); }

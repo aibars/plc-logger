@@ -25,11 +25,11 @@ namespace PLCLogger
             InitializeComponent();
             try
             {
+                MessageLog = new Log("FPrincipal");
                 plc = new PLC_Interface();
                 config = new Config();
                 DB = new Database();
                 LogFile = new LogFile();
-                MessageLog = new Log("FPrincipal");
             }
             catch (Exception e)
             {
@@ -216,11 +216,11 @@ namespace PLCLogger
                             {
                                 if (plc.Sync_WriteMemory(var))
                                 {
-                                    MessageLog.Add("Escrito " + var.valor + " en " + var.direccion);
+                                    MessageLog.Add("Escrito " + var.Valor + " en " + var.Direccion);
                                 }
                                 else
                                 {
-                                    MessageLog.Add("Error al escribir en " + var.direccion);
+                                    MessageLog.Add("Error al escribir en " + var.Direccion);
                                 }
 
                             }
@@ -280,11 +280,11 @@ namespace PLCLogger
                             {
                                 if (plc.Sync_WriteMemory(var)) 
                                 {
-                                    MessageLog.Add("Escrito " + var.valor_escritura + " en " + var.direccion);
+                                    MessageLog.Add("Escrito " + var.ValorEscritura + " en " + var.Direccion);
                                 }
                                 else
                                 {
-                                    MessageLog.Add("Error al escribir en " + var.direccion);
+                                    MessageLog.Add("Error al escribir en " + var.Direccion);
                                 }
 
                             }

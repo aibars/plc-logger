@@ -11,7 +11,6 @@ namespace PLCLogger
         [STAThread]
         static void Main()
         {
-            HibernatingRhinos.Profiler.Appender.NHibernate.NHibernateProfiler.Initialize();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FPrincipal());

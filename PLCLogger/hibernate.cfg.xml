@@ -9,7 +9,7 @@
     <property name='adonet.batch_size'>50</property>
     <property name='cache.use_second_level_cache'>false</property>
 	<property name="connection.connection_string">
-    Server=localhost;Port=5432;Database=prueba_plc;User Id=postgres;Password=1234;<!--SSL=true;-->
+    Server=localhost;Port=5432;Database=plc;User Id=postgres;Password=1234;<!--SSL=true;-->
     
   </property> 
   </session-factory>
