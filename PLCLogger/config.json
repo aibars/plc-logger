@@ -1,0 +1,258 @@
+{
+
+	"nodes": {
+			"protocol": "MODBUS/RTU",	
+			"id": 1,
+			"port": "COM4",
+			"baudrate": 9600,
+			"parity": "none",
+			"stopbits": 1,
+			"type": "slave"
+			 
+	},
+	"variables": [
+		{ "type": "bool", "name": "variable1", "direccion": "%MW4","cant_elem":1, "lh": "false"},
+		{ "type": "int", "name": "variable3", "direccion": "%mw6","cant_elem":1 },
+		{ "type": "byte", "name": "variable2", "direccion": "%mw05","cant_elem":1, "lh": "true"},
+		{ "type": "uint", "name": "variable5", "direccion": "%mw10","cant_elem":1 },
+		{ "type": "udint", "name": "variable6", "direccion": "%mw12","cant_elem":2 },
+		{ "type": "real", "name": "variable7", "direccion": "%mw14","cant_elem":2 },		
+		{ "type": "dint", "name": "variable4", "direccion": "%mw8","cant_elem":2 },
+		{ "type": "string", "name": "variable8", "direccion": "%mw16","cant_elem":16 },
+		{ "type": "date", "name": "variable10", "direccion": "%mw32","cant_elem":2 },
+		{ "type": "time", "name": "variable9", "direccion": "%mw34","cant_elem":2 },
+		{ "type": "timeofday", "name": "variable11", "direccion": "%mw36","cant_elem":2 },
+		{ "type": "bit", "name": "variable12", "direccion": "%mw38.0","cant_elem":1 },
+		{ "type": "bit", "name": "variable13", "direccion": "%mw38.1","cant_elem":1 },
+		{ "type": "bit", "name": "variable14", "direccion": "%mw38.2","cant_elem":1 },
+		{ "type": "bit", "name": "variable15", "direccion": "%mw38.3","cant_elem":1 },
+		{ "type": "bit", "name": "variable16", "direccion": "%mw38.4","cant_elem":1 },
+		{ "type": "bit", "name": "variable17", "direccion": "%mw38.5","cant_elem":1 },
+		{ "type": "bit", "name": "variable18", "direccion": "%mw38.6","cant_elem":1 },
+		{ "type": "bit", "name": "variable19", "direccion": "%mw38.7","cant_elem":1 },
+		{ "type": "bit", "name": "variable20", "direccion": "%mw38.8","cant_elem":1 },
+		{ "type": "bit", "name": "variable21", "direccion": "%mw38.9","cant_elem":1 },
+		{ "type": "bit", "name": "variable22", "direccion": "%mw38.10","cant_elem":1 },
+		{ "type": "bit", "name": "variable23", "direccion": "%mw38.11","cant_elem":1 },
+		{ "type": "bit", "name": "variable24", "direccion": "%mw38.12","cant_elem":1 },
+		{ "type": "bit", "name": "variable25", "direccion": "%mw38.13","cant_elem":1 },
+		{ "type": "bit", "name": "variable26", "direccion": "%mw38.14","cant_elem":1 },
+		{ "type": "bit", "name": "variable27", "direccion": "%mw38.15","cant_elem":1 }
+		
+	],
+	"objects": {
+		"motor": {
+			"status": {
+				"codigo_estado": {
+					"type": "int16",	
+					"direccion": 0,		
+					"access": "r"		
+				},
+				"codigo_falla": {
+					"type": "int16",
+					"direccion": 1,
+					"access": "r"
+				},
+                "falla": {
+                	"type": "bool",
+                	"direccion": 2,
+                	"access": "r"
+                },
+                "listo": {
+                	"type": "bool",
+                	"direccion": 2.8,
+                	"access": "r"
+                },
+                "vacio": {
+                	"type": "bool",
+                	"direccion": 3,
+                	"access": "r"
+                },
+                "arrancando": {
+                	"type": "bool",
+                	"direccion": 3.8,
+                	"access": "r"
+                },
+                "marcha": {
+                	"type": "bool",
+                	"direccion": 4,
+                	"access": "r"
+                },
+                "marcha_dir": {
+                	"type": "bool",
+                	"direccion": 4.8,
+                	"access": "r"
+                },
+                "marcha_inv": {
+                	"type": "bool",
+                	"direccion": 5,
+                	"access": "r"
+                },
+                "sentido_giro_actual": {
+                	"type": "bool",
+                	"direccion": 5.8,
+                	"access": "r"
+                }
+            },
+            "cmd": {
+                "modo_manual": {
+                	"type": "bool",
+                	"direccion": "6.0",
+                	"access": "rw"
+                },
+                "arranque_man": {
+                	"type": "bool",
+                	"direccion": "6.8",
+                	"access": "rw"
+                },
+                "arranque_auto": {
+                	"type": "bool",
+                	"direccion": "7.0",
+                	"access": "r"
+                },
+                "reset_falla": {
+                	"type": "bool",
+                	"direccion": "7.8",
+                	"access": "rw"
+                },
+                "giro_inverso": {
+                	"type": "bool",
+                	"direccion": "8.0",
+                	"access": "r"
+                },
+                "modo_vaciado": {
+                	"type": "bool",
+                	"direccion": "8.8",
+                	"access": "r"
+                },
+                "falla_externa": {
+                	"type": "bool",
+                	"direccion": "9.0",
+                	"access": "r"
+                },
+                "falla_termico": {
+                	"type": "bool",
+                	"direccion": "9.8",
+                	"access": "r"
+                },
+                "conf_marcha": {
+                	"type": "bool",
+                	"direccion": "10.0",
+                	"access": "r"
+                },
+                "enclav_arranque": {
+                	"type": "bool",
+                	"direccion": "10.8",
+                	"access": "r"
+                },
+                "enclav_parada": {
+                	"type": "bool",
+                	"direccion": "11.0",
+                	"access": "r"
+                }
+            },
+            "cfg": {
+                "modo": {
+                	"type": "int16",
+                	"direccion": 12,
+                	"access": "rw"
+                },
+                "config": {
+                	"type": "uint16",
+                	"direccion": 13,
+                	"access": "rw"
+                },
+                "tiempo_arranque": {
+                	"type": "uint16",
+                	"direccion": 14,
+                	"access": "rw"
+                },
+                "tiempo_parada": {
+                	"type": "uint16",
+                	"direccion": 15,
+                	"access": "rw"
+                },
+                "tiempo_falla": {
+                	"type": "uint16",
+                	"direccion": 16,
+                	"access": "rw"
+                },
+                "tiempo_conf_marcha": {
+                	"type": "uint16",
+                	"direccion": 17,
+                	"access": "rw"
+                },
+                "tiempo_cambio_giro": {
+                	"type": "uint16",
+                	"direccion": 18,
+                	"access": "rw"
+                },
+                "grupo_traba_arranque": {
+                	"type": "uint16",
+                	"direccion": 19,
+                	"access": "r"
+                }
+            },
+
+            "cnt_arranque" : {
+            	"type": "uint16",
+            	"direccion": 20,
+            	"access": "r"
+            },
+            "cnt_parada": {
+            	"type": "uint16",
+            	"direccion": 21,
+            	"access": "r"
+            },
+            "cnt_falla": {
+            	"type": "uint16",
+            	"direccion": 22,
+            	"access": "r"
+            },
+            "cnt_conf_marcha": {
+            	"type": "uint16",
+            	"direccion": 23,
+            	"access": "r"
+            },
+            "cnt_cambio_giro": {
+            	"type": "uint16",
+            	"direccion": 24,
+            	"access": "r"
+            },
+            "cnt_check_falla": {
+            	"type": "uint16",
+            	"direccion": 25,
+            	"access": "r"
+            },
+            "stat_cnt_arranques": {
+            	"type": "uint16",
+            	"direccion": 26,
+            	"access": "r"
+            },
+            "stat_tiempo_marcha_total": {
+            	"type": "uint32",
+            	"direccion": 27,
+            	"access": "r"
+            }
+		}
+	},
+
+	
+	"scans": {
+		"0": {
+			"type": "periodic",		
+			"trigger": "t#5s"		
+		},
+		"1": {
+			"type": "periodic",
+			"trigger": "t#60s"
+		},
+		"2": {
+			"type": "on_change",
+			"trigger": "variable_booleana"
+		}
+	}
+
+
+	
+}

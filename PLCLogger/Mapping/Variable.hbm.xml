@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2" 
+                   assembly="PLCLogger" 
+                   namespace="PLCLogger">
+  
+<class name="Variable" table="variables">
+  <id name="id" column="id">
+    <generator class="native">
+      <param name="sequence">variables_id_seq</param>
+    </generator>
+  </id>
+    <property name="name" column="name" />
+    <property name="type" column="type" />
+    <property name="direccion" column="address" />
+    <property name="valor" column="valor" />
+    <property name="fecha" column="fecha" type="timestamp"/>
+    <property name="escribir" column="escribir" type="boolean"/>
+    <property name="instante_escritura" column="instante_escritura" type="timestamp"/>
+    <property name="valor_escritura" column="valor_escritura"/>
+ 
+</class>
+ 
+</hibernate-mapping>

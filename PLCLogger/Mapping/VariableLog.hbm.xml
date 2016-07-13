@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<hibernate-mapping xmlns="urn:nhibernate-mapping-2.2"
+                   assembly="PLCLogger"
+                   namespace="PLCLogger">
+
+  <class name="VariableLog" table="variables_log">
+    <id name="id" column="id">
+    <generator class="native">
+      <param name="sequence">variables_log_id_seq</param>
+    </generator>
+  </id>
+    <property name="name" column="name" />
+    <property name="fecha" column="fecha"/>
+    <property name="valor" column="valor" />
+  </class>
+
+</hibernate-mapping>
