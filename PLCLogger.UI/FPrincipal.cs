@@ -2,12 +2,16 @@
 using System.ComponentModel;
 using System.Windows.Forms;
 using System.Globalization;
+using PLCLogger.Data;
+using PLCLogger.Entities;
+using PLCLogger.Logic;
+using PLCLogger.Messages;
 
 namespace PLCLogger
 {
     public partial class FPrincipal : Form
     {
-        public static PLC_Interface plc;
+        public static PLCInterface plc;
         static int PLCPlanta_Period1, PLCPlanta_Period2;
         public static Database DB;
         public static Config config;
@@ -27,9 +31,9 @@ namespace PLCLogger
             {
                 LogFile = new LogFile();
                 MessageLog = new Log("FPrincipal");
-                plc = new PLC_Interface();
                 config = new Config();
-                DB = new Database();
+                plc = new PLCInterface(config);
+                DB = new Database(plc);
                 
             }
             catch (Exception e)
@@ -99,13 +103,7 @@ namespace PLCLogger
 
         //--------------------------------------------------------------------------------
 
-        private void FPrincipal_Shown(object sender, EventArgs e)
-        {
-            FSplash Splash = new FSplash();
-            Splash.ShowDialog();
-        }
-
-        //--------------------------------------------------------------------------------
+       //--------------------------------------------------------------------------------
 
         private void bw_PLCSync_DoWork(object sender, DoWorkEventArgs e)
         {
@@ -210,9 +208,9 @@ namespace PLCLogger
                         }
                         else
                         {
-                            DB.Sync(plc, Database.Modos.Guardar);
+                            DB.Sync(plc, Modos.Guardar);
                             MessageLog.Add(DB.MessageLog);
-                            DB.Sync(plc, Database.Modos.LeerEscrituras);
+                            DB.Sync(plc, Modos.LeerEscrituras);
                             foreach (Variable var in plc.Variables_Escritura)
                             {
                                 if (plc.Sync_WriteMemory(var))
@@ -274,10 +272,10 @@ namespace PLCLogger
                         }
                         else
                         {
-                            DB.Sync(plc, Database.Modos.Guardar);
+                            DB.Sync(plc, Modos.Guardar);
                             MessageLog.Add(DB.MessageLog);
-                            DB.Sync(plc, Database.Modos.LeerEscrituras);
-                            foreach (Variable var in plc.Variables_Escritura)
+                            DB.Sync(plc, Modos.LeerEscrituras);
+                            foreach (var var in plc.Variables_Escritura)
                             {
                                 if (plc.Sync_WriteMemory(var)) 
                                 {

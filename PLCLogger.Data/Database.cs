@@ -1,88 +1,87 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection;
 using NHibernate;
 using NHibernate.Cfg;
 using NHibernate.Tool.hbm2ddl;
+using PLCLogger.Entities;
+using PLCLogger.Logic;
+using PLCLogger.Messages;
 
-namespace PLCLogger
+namespace PLCLogger.Data
 {
     public class Database : IDisposable
     {
-
+        private readonly PLCInterface plcInterface;
         protected static Configuration cfg;
         protected static ISessionFactory sessionFactory = null;
         protected static ITransaction transaction = null;
         public static bool error;
 
         public Log MessageLog;
-        public enum Modos
-        {
-            Guardar, //escribe en la db las variables leidas del PLC
-            LeerEscrituras   //obtiene desde la db las variables que deben ser escritas en el PLC  
-        }
+       
         public string quotes(string str)
         {
             return ("'" + str + "'");
         }
 
-        public Database()
+        public Database(PLCInterface plcInterface)
         {
+            this.plcInterface = plcInterface;
+
             this.ConfigurarNHibernate();
             MessageLog = new Log("Database");
-           
+
         }
 
-
-        public void Dispose()
+     public void Dispose()
         {
- 
+
         }
-      
+
 
         //------------------------------------------------------------------------------------------------------------------
-        bool EscribirDatosVariables(PLC_Interface plc)
+        bool EscribirDatosVariables(PLCInterface plc)
         {
             bool retval = true;
             plc.Variables_Escritura = new List<Variable>();
             try
             {
-                    using(ISession session = sessionFactory.OpenSession())
-                    using (ITransaction tx = session.BeginTransaction())
+                using (ISession session = sessionFactory.OpenSession())
+                using (ITransaction tx = session.BeginTransaction())
+                {
+                    string hql = "from Variable v where v.escribir=:escribir and v.instante_escritura>=:t_max_escritura";
+                    IQuery query = session.CreateQuery(hql);
+                    query.SetParameter("escribir", true);
+                    //define un tiempo máximo dentro del cual la escritura debe ser efectuada
+                    query.SetParameter("t_max_escritura", DateTime.Now.AddSeconds(-10));
+                    var var_a_escribir = (List<Variable>)query.List<Variable>();
+                    foreach (var v in var_a_escribir)
                     {
-                        string hql = "from Variable v where v.escribir=:escribir and v.instante_escritura>=:t_max_escritura";
-                        IQuery query = session.CreateQuery(hql);
-                        query.SetParameter("escribir", true);
-                        //define un tiempo máximo dentro del cual la escritura debe ser efectuada
-                        query.SetParameter("t_max_escritura", DateTime.Now.AddSeconds(-10));
-                        var var_a_escribir = (List<Variable>)query.List<Variable>();
-                        foreach (var v in var_a_escribir)
-                        {
-                            v.Address = Config.convertAdrress(v.Direccion, 2);
-                            if (v.Type == "bit") v.Subaddress = Config.convertAdrress(v.Direccion, 3);
-                            plc.Variables_Escritura.Add(v);
+                        v.Address = Config.convertAdrress(v.Direccion, 2);
+                        if (v.Type == "bit") v.Subaddress = Config.convertAdrress(v.Direccion, 3);
+                        plc.Variables_Escritura.Add(v);
 
-                        }
-
-                        query = session.CreateQuery("from Variable v where v.escribir=:escribir");
-                        query.SetParameter("escribir", true);
-                        List<Variable> var_no_escritas = (List<Variable>)query.List<Variable>();
-
-                        foreach (Variable v in var_no_escritas)
-                        {
-                            hql = "update Variable set ValorEscritura=:Valor, instante_escritura=:inst, escribir=:escribir where Name=:Name ";
-                            query = session.CreateQuery(hql);
-                            query.SetParameter("valor", null);
-                            query.SetParameter("escribir", false);
-                            query.SetParameter("name", v.Name);
-                            query.SetParameter("inst", null);
-                            query.ExecuteUpdate();
-                        }
-                        tx.Commit();
                     }
+
+                    query = session.CreateQuery("from Variable v where v.escribir=:escribir");
+                    query.SetParameter("escribir", true);
+                    List<Variable> var_no_escritas = (List<Variable>)query.List<Variable>();
+
+                    foreach (Variable v in var_no_escritas)
+                    {
+                        hql = "update Variable set ValorEscritura=:Valor, instante_escritura=:inst, escribir=:escribir where Name=:Name ";
+                        query = session.CreateQuery(hql);
+                        query.SetParameter("valor", null);
+                        query.SetParameter("escribir", false);
+                        query.SetParameter("name", v.Name);
+                        query.SetParameter("inst", null);
+                        query.ExecuteUpdate();
+                    }
+                    tx.Commit();
                 }
-                
-            
+            }
+
+
             catch (Exception ex)
             {
                 MessageLog.Add(ex.Message);
@@ -91,14 +90,14 @@ namespace PLCLogger
             return retval;
         }
 
-        
+
         //------------------------------------------------------------------------------------------------------------------
-        bool GuardarDatosVariables(PLC_Interface plc)
+        bool GuardarDatosVariables(PLCInterface plc)
         {
-           
+
             var retval = true;
             List<Variable> variables_db = null;
-            using(var session = sessionFactory.OpenSession())
+            using (var session = sessionFactory.OpenSession())
             using (var tx = session.BeginTransaction())
             {
                 string hql = "from Variable";
@@ -106,7 +105,7 @@ namespace PLCLogger
                 variables_db = (List<Variable>)query.List<Variable>();
                 tx.Commit();
             }
-           
+
             // Lee las variables para comprobar si hay cambios
             // traer las variables de la db para ver si han cambiado
 
@@ -164,7 +163,7 @@ namespace PLCLogger
                     }
                     tx.Commit();
                 }
-               
+
             }
 
             catch (Exception ex)
@@ -176,22 +175,22 @@ namespace PLCLogger
             return (retval);
         }
 
-        public bool Sync(PLC_Interface plc, Modos modo)
+        public bool Sync(PLCInterface plc, Modos modo)
         {
 
             var retval = false;
-                 switch (modo)
-                    {
-                        case Modos.Guardar:
-                            retval = GuardarDatosVariables(plc);
-                            break;
-                        case Modos.LeerEscrituras:
-                            retval = EscribirDatosVariables(plc);
-                            break;
-                        default:
-                            MessageLog.Add(this.ToString() + ": No se reconoce modo=" + modo.ToString());
-                            break;
-                    }
+            switch (modo)
+            {
+                case Modos.Guardar:
+                    retval = GuardarDatosVariables(plc);
+                    break;
+                case Modos.LeerEscrituras:
+                    retval = EscribirDatosVariables(plc);
+                    break;
+                default:
+                    MessageLog.Add(": No se reconoce modo=" + modo);
+                    break;
+            }
 
 
             return (retval);

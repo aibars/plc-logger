@@ -5,26 +5,14 @@ namespace PLCLogger.Messages
 {
     public class LogFile
     {
-        string _NombreArchivo;
-
         public Log MessageLog;
 
-        string NombreArchivo
-        {
-            get
-            {
-                return (_NombreArchivo);
-            }
-            set
-            {
-                _NombreArchivo = value;
-            }
-        }
+        private string NombreArchivo { get; set; }
 
         public LogFile()
         {
             MessageLog = new Log();
-            _NombreArchivo = "logfile.log";
+            this.NombreArchivo = "logfile.log";
         }
 
         /// <summary>
@@ -33,9 +21,9 @@ namespace PLCLogger.Messages
         /// <param name="messageLog"></param>
         public bool write(Log _MessageLog)
         {
-            bool retVal = true;
+            var retVal = true;
 
-            for (int i = 0; i < _MessageLog.Logs.Count && retVal; i++)
+            for (var i = 0; i < _MessageLog.Logs.Count && retVal; i++)
             {
                 if (write(_MessageLog.Logs[i]))
                 {
@@ -57,7 +45,7 @@ namespace PLCLogger.Messages
         public bool write(LogLine logLine)
         {
             FileStream fs = null;
-            bool retVal = true;
+            var retVal = true;
 
             lock (this)
             {

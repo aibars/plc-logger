@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace PLCLogger
+namespace PLCLogger.Entities
 {
     public class Variable
     {

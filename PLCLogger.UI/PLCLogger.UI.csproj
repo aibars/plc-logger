@@ -59,36 +59,13 @@
     <StartupObject>PLCLogger.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>Logo+empresa.ico</ApplicationIcon>
+    <ApplicationIcon>
+    </ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Iesi.Collections, Version=4.0.0.0, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
-      <HintPath>..\packages\Iesi.Collections.4.0.1.4000\lib\net40\Iesi.Collections.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="libnodave.net, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ModbusTCP, Version=1.0.5277.26786, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\3.5\libnodave.net.dll</HintPath>
-    </Reference>
-    <Reference Include="Modbus, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\3.5\Modbus.dll</HintPath>
-    </Reference>
-    <Reference Include="ModbusTCP, Version=1.0.5169.40624, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\lib\3.5\ModbusTCP.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="NHibernate, Version=4.0.0.4000, Culture=neutral, PublicKeyToken=aa95f207798dfdb4, processorArchitecture=MSIL">
-      <HintPath>..\packages\NHibernate.4.0.4.4000\lib\net40\NHibernate.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Npgsql, Version=3.1.6.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
-      <HintPath>..\packages\Npgsql.3.1.6\lib\net451\Npgsql.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\lib\ModbusTCP.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -101,31 +78,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Config.cs" />
-    <Compile Include="Database.cs" />
     <Compile Include="FPrincipal.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FPrincipal.Designer.cs">
       <DependentUpon>FPrincipal.cs</DependentUpon>
     </Compile>
-    <Compile Include="FSplash.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FSplash.designer.cs">
-      <DependentUpon>FSplash.cs</DependentUpon>
-    </Compile>
-    <Compile Include="PLC.cs" />
-    <Compile Include="PLC_Interface.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Variable.cs" />
-    <Compile Include="VariableLog.cs" />
     <EmbeddedResource Include="FPrincipal.resx">
       <DependentUpon>FPrincipal.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FSplash.resx">
-      <DependentUpon>FSplash.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -155,25 +117,24 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Logo+empresa.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Mapping\Variable.hbm.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Mapping\VariableLog.hbm.xml">
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="hibernate.cfg.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PLCLogger.Data\PLCLogger.Data.csproj">
+      <Project>{d46a1fcd-060a-4503-a7a8-e70bda6512b6}</Project>
+      <Name>PLCLogger.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PLCLogger.Entities\PLCLogger.Entities.csproj">
+      <Project>{ff3de516-e0c8-4c58-8b30-ce973715fe95}</Project>
+      <Name>PLCLogger.Entities</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\PLCLogger.Logic\PLCLogger.Logic.csproj">
+      <Project>{ead40118-7956-47c9-81de-2bb548b0e6e5}</Project>
+      <Name>PLCLogger.Logic</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PLCLogger.Messages\PLCLogger.Messages.csproj">
       <Project>{0fe95aa9-9e26-4fe9-8e76-6d81ae66e013}</Project>
       <Name>PLCLogger.Messages</Name>

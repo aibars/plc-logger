@@ -1,29 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using PLCLogger.Entities;
 
-namespace PLCLogger
+namespace PLCLogger.Logic
 {
-    public class PLC_Interface : PLC
+    public class PLCInterface : PLC
     {
         
         public List<Variable> Variables;
         public List<Variable> Variables_Escritura;
         public UInt16[] MemoriaPLC;
         public UInt16[] MemoriaPLC_Escritura; //WriteHoldingRegisterEx requiere una estructura del mismo tipo que la memoria del plc
-        public Config config;
+        private readonly Config config;
         public struct Intervalo
         {
             public int i;
             public List<Variable> variables;
         }
         public List<Intervalo> intervalos;
-        public PLC_Interface() : base()
+        public PLCInterface(Config config) 
         {
             MemoriaPLC = new UInt16[32000];
             MemoriaPLC_Escritura = new UInt16[32000];
             Variables = new List<Variable>();
-            config = new Config();
+            this.config = config;
         }
        
         public bool Sync_ReadMemory()

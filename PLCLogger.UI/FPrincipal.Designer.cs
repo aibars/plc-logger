@@ -168,7 +168,6 @@
             this.Name = "FPrincipal";
             this.Text = "Host SCADA";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FPrincipal_FormClosing);
-            this.Shown += new System.EventHandler(this.FPrincipal_Shown);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);

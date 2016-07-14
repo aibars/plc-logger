@@ -6,8 +6,10 @@ using System.IO;
 using System.IO.Ports;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using PLCLogger.Entities;
+using PLCLogger.Messages;
 
-namespace PLCLogger
+namespace PLCLogger.Logic
 {
     public class Config : IDisposable
     {
@@ -20,10 +22,7 @@ namespace PLCLogger
         {
             get
             {
-                return (_IPAddrPLC[0].ToString() + "." +
-                    _IPAddrPLC[1].ToString() + "." +
-                    _IPAddrPLC[2].ToString() + "." +
-                    _IPAddrPLC[3].ToString());
+                return _IPAddrPLC[0] + "." + _IPAddrPLC[1] + "." + _IPAddrPLC[2] + "." + _IPAddrPLC[3];
             }
             set
             {

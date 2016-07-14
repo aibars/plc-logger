@@ -1,10 +1,12 @@
 ﻿using System;
 using System.IO.Ports;
 using Modbus;
+using ModbusTCP;
+using PLCLogger.Messages;
 
-namespace PLCLogger
+namespace PLCLogger.Logic
 {
-    public class PLC : ModbusTCP.Master 
+    public class PLC : Master 
     {
         // Declara los eventos
         public Log MessageLog;
